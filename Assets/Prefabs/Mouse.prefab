@@ -87,6 +87,7 @@ MonoBehaviour:
   _deadAvoidMask:
     serializedVersion: 2
     m_Bits: 512
+  _bardoLayer: 10
   _moveSpeed: 2
   _deadMoveSpeed: 5
   _chanceToChangeDirection: 0.02
