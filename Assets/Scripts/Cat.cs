@@ -22,10 +22,13 @@ public class Cat : MonoBehaviour
     [Header("Functionality")]
     [SerializeField] private int _deadLayer;
     [SerializeField] private int _aliveLayer;
+    [SerializeField] private int _insideShitLayer;
+    [SerializeField] private LayerMask _insideCheckLayerMask;
     [Space]
     [SerializeField] private SpriteRenderer _renderer;
 
     private bool _isAlive = true;
+    private bool _isInsideShit = false;
 
     private float _horizontal;
     private float _vertical;
@@ -33,7 +36,9 @@ public class Cat : MonoBehaviour
     private float _impulse = 0f;
 
     private Animator _animator;
+    private SphereCollider _collider;
     private Rigidbody _rb;
+    private Collider[] _stuffNear = new Collider[5];
 
     public bool IsAlive => _isAlive;
 
@@ -41,6 +46,7 @@ public class Cat : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
+        _collider = GetComponent<SphereCollider>();
 
         _isAlive = Random.value >= 0.5f;
     }
@@ -73,19 +79,43 @@ public class Cat : MonoBehaviour
     {
         _animator.SetBool("IsAlive", isAlive);
 
-        var layer = isAlive ? _aliveLayer : _deadLayer;
-        gameObject.layer = layer;
-        for (var i = 0; i < transform.childCount; i++)
-        {
-            transform.GetChild(i).gameObject.layer = layer;
-        }
-
         _rb.useGravity = isAlive;
         _rb.isKinematic = false;
 
         if (!isAlive)
         {
+            _isInsideShit = false;
             _impulse = _initialDeadImpulse;
+
+            gameObject.layer = _deadLayer;
+            for (var i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.layer = _deadLayer;
+            }
+        }
+        else
+        {
+            var hits = Physics.OverlapSphereNonAlloc(transform.position + _collider.center, _collider.radius * 0.8f,
+                _stuffNear, _insideCheckLayerMask);
+
+            if (hits > 0)
+            {
+                _isInsideShit = true;
+                gameObject.layer = _insideShitLayer;
+                for (var i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).gameObject.layer = _insideShitLayer;
+                }
+            }
+            else
+            {
+                _isInsideShit = false;
+                gameObject.layer = _aliveLayer;
+                for (var i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).gameObject.layer = _aliveLayer;
+                }
+            }
         }
 
         MessageDispatcher.NotifyAlive(isAlive);
@@ -100,6 +130,22 @@ public class Cat : MonoBehaviour
 
 
         _rb.MovePosition(pos);
+
+        if (_isInsideShit)
+        {
+            var hits = Physics.OverlapSphereNonAlloc(transform.position + _collider.center, _collider.radius,
+                _stuffNear, _insideCheckLayerMask);
+
+            if (hits <= 0)
+            {
+                _isInsideShit = false;
+                gameObject.layer = _aliveLayer;
+                for (var i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).gameObject.layer = _aliveLayer;
+                }
+            }
+        }
         
         if (!_isAlive)
         {
