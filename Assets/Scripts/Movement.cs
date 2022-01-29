@@ -14,6 +14,13 @@ public class Movement : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _deadMoveSpeed = 5f;
+    [Space]
+    [SerializeField] private float _initialDeadImpulse = 4f;
+    [SerializeField] private float _minDeadUpMovement = 0.25f;
+    [SerializeField] private float _impulseDecay = 5f;
+
+    private float _impulse = 0f;
 
     private bool _isAlive = true;
     private float _horizontal;
@@ -57,13 +64,9 @@ public class Movement : MonoBehaviour
         else
         {
             _rb.useGravity = false;
-
-            // This is actually a bug and ideally we'd make the behavior with the correct set up,
-            // but we can also just leave it, jam rules = chaos!!!!
-            // the problem with this being a bug is that it collides with the ceiling or walls and loses up movement
-            // because it was going on inertia alone
-            _rb.AddForce(Vector3.up * 2f, ForceMode.Impulse);
             _rb.isKinematic = false;
+
+            _impulse = _initialDeadImpulse;
 
             gameObject.layer = _deadLayer;
         }
@@ -71,11 +74,18 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        var s = _isAlive ? _moveSpeed : _deadMoveSpeed;
         Vector2 pos = transform.position
-                      + (transform.right * _moveSpeed * Time.deltaTime * _horizontal)
-                      + (transform.up * _moveSpeed * Time.deltaTime * _vertical);
+                      + (transform.right * s * Time.deltaTime * _horizontal)
+                      + (transform.up * s * Time.deltaTime * _vertical);
 
 
         _rb.MovePosition(pos);
+        
+        if (!_isAlive)
+        {
+            _rb.AddForce(Vector3.up * _impulse, ForceMode.Force);
+            _impulse = Mathf.Max(_minDeadUpMovement, _impulse - _impulseDecay * Time.deltaTime);
+        }
     }
 }
