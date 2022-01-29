@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Mouse : MonoBehaviour
 {
-    [SerializeField] private int _aliveLayer;
-    [SerializeField] private LayerMask _aliveAvoidMask;
-    [SerializeField] private int _deadLayer;
-    [SerializeField] private LayerMask _deadAvoidMask;
-    [SerializeField] private int _bardoLayer;
-
     [Header("Settings")]
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _deadMoveSpeed = 5f;
@@ -17,6 +11,15 @@ public class Mouse : MonoBehaviour
     [SerializeField] private float _minTimeToChangeDirection = 2f;
     [SerializeField] private Transform _leftDownRayOrigin;
     [SerializeField] private Transform _rightDownRayOrigin;
+
+    [Header("Functionality")]
+    [SerializeField] private int _aliveLayer;
+    [SerializeField] private LayerMask _aliveAvoidMask;
+    [SerializeField] private int _deadLayer;
+    [SerializeField] private LayerMask _deadAvoidMask;
+    [SerializeField] private int _bardoLayer;
+    [Space]
+    [SerializeField] private SpriteRenderer _renderer;
 
     private bool _isAlive;
     private Animator _animator;
@@ -58,6 +61,12 @@ public class Mouse : MonoBehaviour
             _rb.useGravity = false;
             _rb.isKinematic = true;
         }
+    }
+
+    private void Update()
+    {
+        // Handle sprite facing
+        _renderer.flipX = _direction != 1;
     }
 
     private void FixedUpdate()
