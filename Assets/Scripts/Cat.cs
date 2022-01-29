@@ -6,9 +6,6 @@ using Random = UnityEngine.Random;
 
 public class Cat : MonoBehaviour
 {
-    [SerializeField] private int _deadLayer;
-    [SerializeField] private int _aliveLayer;
-
     [Header("Controls")]
     [SerializeField] private string _horizontalAxis = "Horizontal";
     [SerializeField] private string _verticalAxis = "Vertical";
@@ -22,11 +19,18 @@ public class Cat : MonoBehaviour
     [SerializeField] private float _minDeadUpMovement = 0.25f;
     [SerializeField] private float _impulseDecay = 5f;
 
-    private float _impulse = 0f;
+    [Header("Functionality")]
+    [SerializeField] private int _deadLayer;
+    [SerializeField] private int _aliveLayer;
+    [Space]
+    [SerializeField] private SpriteRenderer _renderer;
 
     private bool _isAlive = true;
+
     private float _horizontal;
     private float _vertical;
+
+    private float _impulse = 0f;
 
     private Animator _animator;
     private Rigidbody _rb;
@@ -55,6 +59,12 @@ public class Cat : MonoBehaviour
         }
 
         _vertical = _isAlive ? 0f : Input.GetAxis(_verticalAxis);
+
+        // Handle sprite facing
+        if (Mathf.Abs(_horizontal) > 0.01f)
+        {
+            _renderer.flipX = _horizontal < 0f;
+        }
     }
 
     private void SetAlive(in bool isAlive)
@@ -96,8 +106,13 @@ public class Cat : MonoBehaviour
         }
     }
 
+    // Live/Dead interactions guaranteed by the layer setup
+    // dead cat only hits dead mice; live cat/live mice
     public void HitMouse()
     {
-        
+        if (!_isAlive)
+        {
+            // Handle -life
+        }
     }
 }
