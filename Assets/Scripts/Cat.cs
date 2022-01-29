@@ -35,6 +35,8 @@ public class Cat : MonoBehaviour
     private Animator _animator;
     private Rigidbody _rb;
 
+    public bool IsAlive => _isAlive;
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
