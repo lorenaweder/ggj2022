@@ -147,6 +147,10 @@ MonoBehaviour:
   _impulseDecay: 5
   _deadLayer: 7
   _aliveLayer: 6
+  _insideShitLayer: 11
+  _insideCheckLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
   _renderer: {fileID: 155107878908026618}
 --- !u!95 &155107878092217692
 Animator:
