@@ -18,6 +18,8 @@ public class Cat : MonoBehaviour
     [SerializeField] private float _initialDeadImpulse = 4f;
     [SerializeField] private float _minDeadUpMovement = 0.25f;
     [SerializeField] private float _impulseDecay = 5f;
+    [Space]
+    [SerializeField] private float _invincibleTime = 1f;
 
     [Header("Functionality")]
     [SerializeField] private int _deadLayer;
@@ -34,11 +36,14 @@ public class Cat : MonoBehaviour
     private float _vertical;
 
     private float _impulse = 0f;
+    private float _invincibleTimer = 0f;
 
     private Animator _animator;
     private SphereCollider _collider;
     private Rigidbody _rb;
     private Collider[] _stuffNear = new Collider[5];
+
+    private Lives _lives;
 
     public bool IsAlive => _isAlive;
 
@@ -47,6 +52,8 @@ public class Cat : MonoBehaviour
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<SphereCollider>();
+
+        _lives = GetComponent<Lives>();
 
         _isAlive = Random.value >= 0.5f;
     }
@@ -73,6 +80,14 @@ public class Cat : MonoBehaviour
         {
             _renderer.flipX = _horizontal < 0f;
         }
+
+        // Handle invincible
+        if (_invincibleTimer >= 0f)
+        {
+            _invincibleTimer -= Time.deltaTime;
+            _renderer.enabled = Time.frameCount % 15 == 0;
+        }
+        else _renderer.enabled = true;
     }
 
     private void SetAlive(in bool isAlive)
@@ -95,6 +110,9 @@ public class Cat : MonoBehaviour
         }
         else
         {
+            _invincibleTimer = 0f;
+            _renderer.enabled = true;
+
             var hits = Physics.OverlapSphereNonAlloc(transform.position + _collider.center, _collider.radius * 0.8f,
                 _stuffNear, _insideCheckLayerMask);
 
@@ -158,9 +176,14 @@ public class Cat : MonoBehaviour
     // dead cat only hits dead mice; live cat/live mice
     public void HitMouse()
     {
-        if (!_isAlive)
+        if (_isAlive) return;
+        if (_invincibleTimer > 0f) return;
+        if (!_lives.LoseOne())
         {
-            // Handle -life
+            _invincibleTimer = _invincibleTime;
+            return;
         }
+        MessageDispatcher.NotifyGameOver();
+        this.enabled = false;
     }
 }
