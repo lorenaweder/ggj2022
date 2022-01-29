@@ -7,6 +7,7 @@ public class Mouse : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _deadMoveSpeed = 5f;
+    [SerializeField] private float _fullChaseRange = 4f;
     [SerializeField] private float _chanceToChangeDirection = 0.3f;
     [SerializeField] private float _minTimeToChangeDirection = 2f;
     [SerializeField] private Transform _leftDownRayOrigin;
@@ -28,13 +29,22 @@ public class Mouse : MonoBehaviour
     private int _direction = 1;
     private float _lastDirectionChangeTime;
 
+    private Cat _cat;
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
 
+        _cat = FindObjectOfType<Cat>();
+
         _isAlive = true;
         SetAlive(_isAlive);
+    }
+
+    private void OnDestroy()
+    {
+        _cat = null;
     }
 
     private void SetAlive(in bool isAlive)
@@ -59,7 +69,7 @@ public class Mouse : MonoBehaviour
             _rb.velocity = Vector3.zero;
 
             _rb.useGravity = false;
-            _rb.isKinematic = true;
+            _rb.isKinematic = false;
         }
     }
 
@@ -99,7 +109,16 @@ public class Mouse : MonoBehaviour
         }
         else
         {
-
+            if (_cat.IsAlive)
+            {
+                // Don't chase when not seeing the cat
+                _rb.velocity = Vector3.zero;
+                return;
+            }
+            var dirToCat = _cat.transform.position - transform.position;
+            // Hone in when closer
+            var speed = (dirToCat.sqrMagnitude < _fullChaseRange) ? _deadMoveSpeed : _deadMoveSpeed * 0.15f;
+            _rb.AddForce(dirToCat.normalized * speed);
         }
     }
 

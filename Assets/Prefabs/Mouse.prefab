@@ -79,8 +79,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120cf159c6320214489c6c6b68d5c07f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 2
-  _deadMoveSpeed: 5
+  _moveSpeed: 1
+  _deadMoveSpeed: 2
+  _fullChaseRange: 4
   _chanceToChangeDirection: 0.02
   _minTimeToChangeDirection: 1
   _leftDownRayOrigin: {fileID: 3493950039734625553}
