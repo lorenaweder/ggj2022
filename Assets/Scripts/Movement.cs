@@ -6,6 +6,13 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] private int _deadLayer;
     [SerializeField] private int _aliveLayer;
+
+    [Header("Controls")]
+    [SerializeField] private string _horizontalAxis = "Horizontal";
+    [SerializeField] private string _verticalAxis = "Vertical";
+    [SerializeField] private KeyCode _toggleAlive = KeyCode.Space;
+
+    [Header("Settings")]
     [SerializeField] private float _moveSpeed = 5f;
 
     private bool _isAlive = true;
@@ -19,20 +26,22 @@ public class Movement : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
+
+        _isAlive = Random.value >= 0.5f;
         SetAlive(_isAlive);
     }
 
     private void Update()
     {
-        _horizontal = Input.GetAxis("Horizontal");
+        _horizontal = Input.GetAxis(_horizontalAxis);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(_toggleAlive))
         {
             _isAlive = !_isAlive;
             SetAlive(_isAlive);
         }
 
-        _vertical = _isAlive ? 0f : Input.GetAxis("Vertical");
+        _vertical = _isAlive ? 0f : Input.GetAxis(_verticalAxis);
     }
 
     private void SetAlive(in bool isAlive)
@@ -42,23 +51,22 @@ public class Movement : MonoBehaviour
         {
             _rb.useGravity = true;
             _rb.isKinematic = false;
+
             gameObject.layer = _aliveLayer;
-            CancelInvoke("SetGhost");
         }
         else
         {
             _rb.useGravity = false;
+
+            // This is actually a bug and ideally we'd make the behavior with the correct set up,
+            // but we can also just leave it, jam rules = chaos!!!!
+            // the problem with this being a bug is that it collides with the ceiling or walls and loses up movement
+            // because it was going on inertia alone
             _rb.AddForce(Vector3.up * 2f, ForceMode.Impulse);
             _rb.isKinematic = false;
-            gameObject.layer = _deadLayer;
-            //Invoke("SetGhost", 0.5f);
-        }
-    }
 
-    private void SetGhost()
-    {
-        _rb.useGravity = false;
-        _rb.isKinematic = true;
+            gameObject.layer = _deadLayer;
+        }
     }
 
     private void FixedUpdate()
