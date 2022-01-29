@@ -70,8 +70,10 @@ GameObject:
   - component: {fileID: 155107878092217693}
   - component: {fileID: 155107878092217694}
   - component: {fileID: 155107878092217695}
-  - component: {fileID: 155107878092217680}
   - component: {fileID: 155107878092217692}
+  - component: {fileID: 155107878092217680}
+  - component: {fileID: 9002735333355792703}
+  - component: {fileID: 7444596097294274433}
   m_Layer: 6
   m_Name: Cat
   m_TagString: Untagged
@@ -125,6 +127,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
+--- !u!95 &155107878092217692
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155107878092217681}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1298a65c3945da249888f7e91a3b4dd8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &155107878092217680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,26 +174,33 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   _renderer: {fileID: 155107878908026618}
---- !u!95 &155107878092217692
-Animator:
-  serializedVersion: 4
+--- !u!114 &9002735333355792703
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 155107878092217681}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1298a65c3945da249888f7e91a3b4dd8, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a435095822ba381419fe56a9fa16f258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialLives: 3
+  _maxLives: 9
+--- !u!114 &7444596097294274433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155107878092217681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5e8ec207cdf49e46aeef52046d82e13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _endResultsScreen: 2
 --- !u!1 &155107878908026620
 GameObject:
   m_ObjectHideFlags: 0
