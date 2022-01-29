@@ -11,8 +11,8 @@ public class MessageDispatcher : MonoBehaviour
     public static event Action OnGameOver;
     public static void NotifyGameOver() => OnGameOver?.Invoke();
 
-    public static event Action<int> OnLivesChanged;
-    public static void NotifyLives(int lives) => OnLivesChanged?.Invoke(lives);
+    public static event Action<int, int> OnLivesChanged;
+    public static void NotifyLives(int lives, int max) => OnLivesChanged?.Invoke(lives, max);
 
     private void OnDestroy()
     {
