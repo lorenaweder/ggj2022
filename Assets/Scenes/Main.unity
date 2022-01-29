@@ -319,10 +319,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _aliveView:
     serializedVersion: 2
-    m_Bits: 887
+    m_Bits: 1911
   _deadView:
     serializedVersion: 2
-    m_Bits: 951
+    m_Bits: 1975
 --- !u!1 &559934710
 GameObject:
   m_ObjectHideFlags: 0

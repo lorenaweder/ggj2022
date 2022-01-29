@@ -8,6 +8,7 @@ public class Mouse : MonoBehaviour
     [SerializeField] private LayerMask _aliveAvoidMask;
     [SerializeField] private int _deadLayer;
     [SerializeField] private LayerMask _deadAvoidMask;
+    [SerializeField] private int _bardoLayer;
 
     [Header("Settings")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -38,12 +39,7 @@ public class Mouse : MonoBehaviour
         _isAlive = isAlive;
         _animator.SetBool("IsAlive", isAlive);
 
-        var layer = isAlive ? _aliveLayer : _deadLayer;
-        gameObject.layer = layer;
-        for (var i = 0; i < transform.childCount; i++)
-        {
-            transform.GetChild(i).gameObject.layer = layer;
-        }
+        gameObject.layer = isAlive ? _aliveLayer : _deadLayer;
 
         if (isAlive)
         {
@@ -52,6 +48,11 @@ public class Mouse : MonoBehaviour
         }
         else
         {
+            for (var i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.layer = _bardoLayer;
+            }
+
             _rb.velocity = Vector3.zero;
 
             _rb.useGravity = false;
@@ -102,6 +103,19 @@ public class Mouse : MonoBehaviour
 
     public void HitByCat()
     {
+        if (!_isAlive)
+        {
+            return;
+        }
         SetAlive(false);
+    }
+
+    // Called from Animation
+    public void NotifyDeathAnimationDone()
+    {
+        for (var i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.layer = _deadLayer;
+        }
     }
 }
