@@ -37,21 +37,25 @@ public class Mouse : MonoBehaviour
     {
         _isAlive = isAlive;
         _animator.SetBool("IsAlive", isAlive);
+
+        var layer = isAlive ? _aliveLayer : _deadLayer;
+        gameObject.layer = layer;
+        for (var i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.layer = layer;
+        }
+
         if (isAlive)
         {
             _rb.useGravity = true;
             _rb.isKinematic = false;
-
-            gameObject.layer = _aliveLayer;
         }
         else
         {
             _rb.velocity = Vector3.zero;
 
             _rb.useGravity = false;
-            _rb.isKinematic = false;
-
-            gameObject.layer = _deadLayer;
+            _rb.isKinematic = true;
         }
     }
 
