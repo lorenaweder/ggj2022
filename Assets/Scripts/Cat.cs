@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Cat : MonoBehaviour
 {
@@ -35,6 +37,10 @@ public class Cat : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
 
         _isAlive = Random.value >= 0.5f;
+    }
+
+    private void Start()
+    {
         SetAlive(_isAlive);
     }
 
@@ -69,6 +75,8 @@ public class Cat : MonoBehaviour
         {
             _impulse = _initialDeadImpulse;
         }
+
+        MessageDispatcher.NotifyAlive(isAlive);
     }
 
     private void FixedUpdate()
