@@ -35,6 +35,7 @@ public class Mouse : MonoBehaviour
 
     private void SetAlive(in bool isAlive)
     {
+        _isAlive = isAlive;
         _animator.SetBool("IsAlive", isAlive);
         if (isAlive)
         {
@@ -45,6 +46,8 @@ public class Mouse : MonoBehaviour
         }
         else
         {
+            _rb.velocity = Vector3.zero;
+
             _rb.useGravity = false;
             _rb.isKinematic = false;
 
@@ -54,8 +57,6 @@ public class Mouse : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 pos = new Vector2();
-
         var maxSpeed = _isAlive ? _moveSpeed : _deadMoveSpeed;
         maxSpeed *= _direction;
 
@@ -79,14 +80,13 @@ public class Mouse : MonoBehaviour
                 return;
             }
 
-            pos = transform.position + (transform.right * maxSpeed * Time.deltaTime);
+            var pos = transform.position + (transform.right * maxSpeed * Time.deltaTime);
+            _rb.MovePosition(pos);
         }
         else
         {
 
         }
-
-        _rb.MovePosition(pos);
     }
 
     private void ChangeDirection()
@@ -94,5 +94,10 @@ public class Mouse : MonoBehaviour
         _rb.velocity = Vector3.zero;
         _direction *= -1;
         _lastDirectionChangeTime = Time.time;
+    }
+
+    public void HitByCat()
+    {
+        SetAlive(false);
     }
 }

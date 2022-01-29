@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class Cat : MonoBehaviour
 {
     [SerializeField] private int _deadLayer;
     [SerializeField] private int _aliveLayer;
@@ -54,21 +54,20 @@ public class Movement : MonoBehaviour
     private void SetAlive(in bool isAlive)
     {
         _animator.SetBool("IsAlive", isAlive);
-        if (isAlive)
-        {
-            _rb.useGravity = true;
-            _rb.isKinematic = false;
 
-            gameObject.layer = _aliveLayer;
+        var layer = isAlive ? _aliveLayer : _deadLayer;
+        gameObject.layer = layer;
+        for (var i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.layer = layer;
         }
-        else
+
+        _rb.useGravity = isAlive;
+        _rb.isKinematic = false;
+
+        if (!isAlive)
         {
-            _rb.useGravity = false;
-            _rb.isKinematic = false;
-
             _impulse = _initialDeadImpulse;
-
-            gameObject.layer = _deadLayer;
         }
     }
 
@@ -87,5 +86,10 @@ public class Movement : MonoBehaviour
             _rb.AddForce(Vector3.up * _impulse, ForceMode.Force);
             _impulse = Mathf.Max(_minDeadUpMovement, _impulse - _impulseDecay * Time.deltaTime);
         }
+    }
+
+    public void HitMouse()
+    {
+        
     }
 }
