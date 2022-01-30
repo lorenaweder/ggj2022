@@ -1,15 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class LivesUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _lifeIcon;
-    private List<GameObject> _lives;
+    private List<GameObject> _missing;
 
     private void Awake()
     {
-        MessageDispatcher.OnLivesChanged += OnLivesChanged; ;
+        _missing = new List<GameObject>(9);
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            // Ugly fix to not hand place all the lives again
+            var l = transform.GetChild(i);
+            _missing.Add(l.GetChild(1).gameObject);
+        }
+
+        MessageDispatcher.OnLivesChanged += OnLivesChanged;
     }
 
     private void OnDestroy()
@@ -21,23 +30,11 @@ public class LivesUI : MonoBehaviour
 
     private void OnLivesChanged(int lives, int max)
     {
-        if (_firstTime)
+        Assert.IsTrue(max >= lives);
+        Assert.IsTrue(max <= _missing.Count);
+        for (int i = 0; i < max; i++)
         {
-            _lives = new List<GameObject>(max);
-            for (int i = 0; i < max; i++)
-            {
-                var g = Instantiate(_lifeIcon, this.transform);
-                g.SetActive(i < lives);
-                _lives.Add(g);
-            }
-            _firstTime = false;
-        }
-        else
-        {
-            for (int i = 0; i < _lives.Count; i++)
-            {
-                _lives[i].gameObject.SetActive(i < lives);
-            }
+            _missing[i].SetActive(i >= lives);
         }
     }
 }

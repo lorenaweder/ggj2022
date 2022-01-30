@@ -167,6 +167,7 @@ MonoBehaviour:
   _initialDeadImpulse: 4
   _minDeadUpMovement: 0.25
   _impulseDecay: 5
+  _invincibleTime: 1
   _deadLayer: 7
   _aliveLayer: 6
   _insideShitLayer: 11
@@ -186,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a435095822ba381419fe56a9fa16f258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialLives: 3
+  _initialLives: 9
   _maxLives: 9
 --- !u!114 &7444596097294274433
 MonoBehaviour:
@@ -200,6 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e8ec207cdf49e46aeef52046d82e13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _delay: 2
   _endResultsScreen: 2
 --- !u!1 &155107878908026620
 GameObject:

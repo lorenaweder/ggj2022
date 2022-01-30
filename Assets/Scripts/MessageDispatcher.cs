@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MessageDispatcher : MonoBehaviour
+public class MessageDispatcher
 {
+    public static event Action<int> OnMouseKilled;
+
     public static event Action<bool> OnAliveStateChanged;
     public static void NotifyAlive(bool isAlive) => OnAliveStateChanged?.Invoke(isAlive);
 
@@ -14,10 +16,14 @@ public class MessageDispatcher : MonoBehaviour
     public static event Action<int, int> OnLivesChanged;
     public static void NotifyLives(int lives, int max) => OnLivesChanged?.Invoke(lives, max);
 
-    private void OnDestroy()
+    private static int _score;
+    public static int Score
     {
-        OnAliveStateChanged = null;
-        OnLivesChanged = null;
-        OnGameOver = null;
+        get => _score;
+        set
+        {
+            _score = value;
+            OnMouseKilled?.Invoke(value);
+        }
     }
 }
