@@ -103,6 +103,7 @@ public class Cat : MonoBehaviour
         {
             _invincibleTimer = _invincibleTime;
 
+            SoundManager.Instance.PlayEffectMusic("MusicCatDeath", true);
             _isInsideShit = false;
             _impulse = _initialDeadImpulse;
 
@@ -114,6 +115,7 @@ public class Cat : MonoBehaviour
         }
         else
         {
+            SoundManager.Instance.PlayEffectMusic("MusicCatAlive", true);
             _invincibleTimer = 0f;
             _renderer.enabled = true;
 
@@ -188,8 +190,11 @@ public class Cat : MonoBehaviour
         if (_invincibleTimer > 0f) return;
         if (!_lives.LoseOne())
         {
+            SoundManager.Instance.PlayEffect("CatDamaged");
             _invincibleTimer = _invincibleTime;
             return;
+        } else {
+            SoundManager.Instance.PlayEffect("CatDied");
         }
         MessageDispatcher.NotifyGameOver();
         this.enabled = false;

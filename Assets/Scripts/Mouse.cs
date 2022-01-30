@@ -143,7 +143,7 @@ public class Mouse : MonoBehaviour
         {
             return;
         }
-
+        SoundManager.Instance.PlayEffect("MouseDied");
         SetAlive(false);
         if (Spawner != null) Spawner.ReportMouseDead();
         Spawner = null;
