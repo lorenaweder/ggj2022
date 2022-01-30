@@ -85,7 +85,7 @@ public class Cat : MonoBehaviour
         if (_invincibleTimer >= 0f)
         {
             _invincibleTimer -= Time.deltaTime;
-            _renderer.enabled = Time.frameCount % 15 == 0;
+            _renderer.enabled = Time.frameCount % 5 == 0;
         }
         else _renderer.enabled = true;
     }
@@ -99,6 +99,8 @@ public class Cat : MonoBehaviour
 
         if (!isAlive)
         {
+            _invincibleTimer = _invincibleTime;
+
             _isInsideShit = false;
             _impulse = _initialDeadImpulse;
 
