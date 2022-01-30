@@ -394,6 +394,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8594245455685595028}
   - component: {fileID: 5174892692518617643}
+  - component: {fileID: 3967237001804188793}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -451,3 +452,15 @@ MonoBehaviour:
   BackgroundMusicSource: {fileID: 3316805293098943889}
   EffectMusicSource: {fileID: 986016124281688094}
   EffectSource: {fileID: 7720406792749759280}
+--- !u!114 &3967237001804188793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5086096582829730495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c193a02e09d03e49b736c910e70674f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
