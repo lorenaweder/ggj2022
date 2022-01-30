@@ -20,6 +20,7 @@ public class Cat : MonoBehaviour
     [SerializeField] private float _impulseDecay = 5f;
     [Space]
     [SerializeField] private float _invincibleTime = 1f;
+    [SerializeField] private float _invincibleTimeChange = 0.2f;
 
     [Header("Functionality")]
     [SerializeField] private int _deadLayer;
@@ -106,7 +107,7 @@ public class Cat : MonoBehaviour
 
         if (!isAlive)
         {
-            _invincibleTimer = _invincibleTime;
+            _invincibleTimer = _invincibleTimeChange;
 
             SoundManager.Instance.PlayEffectMusic("MusicCatDeath", true);
             _isInsideShit = false;
