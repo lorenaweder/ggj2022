@@ -97,6 +97,7 @@ MonoBehaviour:
     m_Bits: 512
   _bardoLayer: 10
   _renderer: {fileID: 3493950040071602738}
+  _deadMouse: {fileID: 21300000, guid: 3a048926321e8894aa65b97cde7432f0, type: 3}
 --- !u!95 &3493950039451659393
 Animator:
   serializedVersion: 4
@@ -221,7 +222,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: cecdcd16dc5d1ff44b1d3b926f6e2bdc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1b34d3f1e0f5a384a9fa55158bf86dc8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
