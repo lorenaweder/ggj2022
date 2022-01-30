@@ -23,6 +23,8 @@ public class Mouse : MonoBehaviour
     [Space]
     [SerializeField] private SpriteRenderer _renderer;
 
+    [SerializeField] private Sprite _deadMouse; 
+
     private bool _isAlive;
     private Animator _animator;
     private Rigidbody _rb;
@@ -147,6 +149,7 @@ public class Mouse : MonoBehaviour
         SetAlive(false);
         if (Spawner != null) Spawner.ReportMouseDead();
         Spawner = null;
+        _renderer.sprite = _deadMouse;
     }
 
     // Called from Animation
