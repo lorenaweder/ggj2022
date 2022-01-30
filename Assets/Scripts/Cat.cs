@@ -49,6 +49,8 @@ public class Cat : MonoBehaviour
 
     private void Awake()
     {
+        MessageDispatcher.Score = 0;
+
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<SphereCollider>();
@@ -178,7 +180,11 @@ public class Cat : MonoBehaviour
     // dead cat only hits dead mice; live cat/live mice
     public void HitMouse()
     {
-        if (_isAlive) return;
+        if (_isAlive)
+        {
+            MessageDispatcher.Score++;
+            return;
+        }
         if (_invincibleTimer > 0f) return;
         if (!_lives.LoseOne())
         {
