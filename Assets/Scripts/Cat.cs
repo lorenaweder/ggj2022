@@ -37,6 +37,7 @@ public class Cat : MonoBehaviour
 
     private float _impulse = 0f;
     private float _invincibleTimer = 0f;
+    private bool _hitByMice;
 
     private Animator _animator;
     private SphereCollider _collider;
@@ -87,9 +88,13 @@ public class Cat : MonoBehaviour
         if (_invincibleTimer >= 0f)
         {
             _invincibleTimer -= Time.deltaTime;
-            //_renderer.enabled = Time.frameCount % 5 == 0;
+            if(_hitByMice) _renderer.enabled = Time.frameCount % 5 == 0;
         }
-        else _renderer.enabled = true;
+        else
+        {
+            _hitByMice = false;
+            _renderer.enabled = true;
+        }
     }
 
     private void SetAlive(in bool isAlive)
@@ -116,6 +121,7 @@ public class Cat : MonoBehaviour
         else
         {
             SoundManager.Instance.PlayEffectMusic("MusicCatAlive", true);
+            _hitByMice = false;
             _invincibleTimer = 0f;
             _renderer.enabled = true;
 
@@ -192,6 +198,7 @@ public class Cat : MonoBehaviour
         {
             SoundManager.Instance.PlayEffect("CatDamaged");
             _invincibleTimer = _invincibleTime;
+            _hitByMice = true;
             return;
         } else {
             SoundManager.Instance.PlayEffect("CatDied");
