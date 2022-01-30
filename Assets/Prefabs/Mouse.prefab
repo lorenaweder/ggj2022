@@ -86,6 +86,7 @@ MonoBehaviour:
   _minTimeToChangeDirection: 1
   _leftDownRayOrigin: {fileID: 3493950039734625553}
   _rightDownRayOrigin: {fileID: 3493950041044236866}
+  _downRayLength: 0.25
   _aliveLayer: 6
   _aliveAvoidMask:
     serializedVersion: 2
