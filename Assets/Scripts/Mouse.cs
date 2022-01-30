@@ -14,6 +14,7 @@ public class Mouse : MonoBehaviour
     [SerializeField] private Transform _rightDownRayOrigin;
 
     [Header("Functionality")]
+    [SerializeField] private float _downRayLength = 0.25f;
     [SerializeField] private int _aliveLayer;
     [SerializeField] private LayerMask _aliveAvoidMask;
     [SerializeField] private int _deadLayer;
@@ -30,6 +31,13 @@ public class Mouse : MonoBehaviour
     private float _lastDirectionChangeTime;
 
     private Cat _cat;
+
+    public float MoveSpeed
+    {
+        get => _moveSpeed;
+        set => _moveSpeed = value;
+    }
+    public SpawnPoint Spawner { get; set; }
 
     private void Awake()
     {
@@ -85,12 +93,12 @@ public class Mouse : MonoBehaviour
         maxSpeed *= _direction;
 
         var downRay = _direction > 0f ? _rightDownRayOrigin : _leftDownRayOrigin;
-        Debug.DrawRay(downRay.position, Vector3.down, Color.green);
+        Debug.DrawRay(downRay.position, Vector3.down * _downRayLength, Color.green);
 
         if (_isAlive)
         {
             var hasStopAhead = Physics.Raycast(new Ray(downRay.position, Vector3.right * _direction), 0.2f, _aliveAvoidMask);
-            var hasFloor = Physics.Raycast(new Ray(downRay.position, Vector3.down), 1f, _aliveAvoidMask);
+            var hasFloor = Physics.Raycast(new Ray(downRay.position, Vector3.down), _downRayLength, _aliveAvoidMask);
 
             if (!hasFloor || hasStopAhead)
             {
@@ -135,7 +143,10 @@ public class Mouse : MonoBehaviour
         {
             return;
         }
+
         SetAlive(false);
+        if (Spawner != null) Spawner.ReportMouseDead();
+        Spawner = null;
     }
 
     // Called from Animation
