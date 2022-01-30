@@ -26,6 +26,7 @@ public class GameEnd : MonoBehaviour
         IEnumerator LoadNext()
         {
             yield return new WaitForSeconds(_delay);
+            SoundManager.Instance.PlayEffect("CatDiedMouseLaughing");
             SceneManager.LoadScene(_endResultsScreen);
         }
     }
