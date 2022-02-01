@@ -113,14 +113,11 @@ public class Cat : MonoBehaviour
             _isInsideShit = false;
             _impulse = _initialDeadImpulse;
 
-            gameObject.layer = _deadLayer;
-            for (var i = 0; i < transform.childCount; i++)
-            {
-                transform.GetChild(i).gameObject.layer = _deadLayer;
-            }
+            SetLayerOnSelfAndChildren(_deadLayer);
         }
         else
         {
+            _rb.velocity = Vector3.zero;
             SoundManager.Instance.PlayEffectMusic("MusicCatAlive", true);
             _hitByMice = false;
             _invincibleTimer = 0f;
@@ -132,20 +129,12 @@ public class Cat : MonoBehaviour
             if (hits > 0)
             {
                 _isInsideShit = true;
-                gameObject.layer = _insideShitLayer;
-                for (var i = 0; i < transform.childCount; i++)
-                {
-                    transform.GetChild(i).gameObject.layer = _insideShitLayer;
-                }
+                SetLayerOnSelfAndChildren(_insideShitLayer);
             }
             else
             {
                 _isInsideShit = false;
-                gameObject.layer = _aliveLayer;
-                for (var i = 0; i < transform.childCount; i++)
-                {
-                    transform.GetChild(i).gameObject.layer = _aliveLayer;
-                }
+                SetLayerOnSelfAndChildren(_aliveLayer);
             }
         }
 
@@ -170,11 +159,7 @@ public class Cat : MonoBehaviour
             if (hits <= 0)
             {
                 _isInsideShit = false;
-                gameObject.layer = _aliveLayer;
-                for (var i = 0; i < transform.childCount; i++)
-                {
-                    transform.GetChild(i).gameObject.layer = _aliveLayer;
-                }
+                SetLayerOnSelfAndChildren(_aliveLayer);
             }
         }
         
@@ -182,6 +167,15 @@ public class Cat : MonoBehaviour
         {
             _rb.AddForce(Vector3.up * _impulse, ForceMode.Force);
             _impulse = Mathf.Max(_minDeadUpMovement, _impulse - _impulseDecay * Time.deltaTime);
+        }
+    }
+
+    private void SetLayerOnSelfAndChildren(int layer)
+    {
+        gameObject.layer = layer;
+        for (var i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.layer = layer;
         }
     }
 
