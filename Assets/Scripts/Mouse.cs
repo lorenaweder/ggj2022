@@ -20,9 +20,9 @@ public class Mouse : MonoBehaviour
     [SerializeField] private int _deadLayer;
     [SerializeField] private LayerMask _deadAvoidMask;
     [SerializeField] private int _bardoLayer;
+    [SerializeField] private LayerMask _miceAvoidMask;
     [Space]
     [SerializeField] private SpriteRenderer _renderer;
-
     [SerializeField] private Sprite _deadMouse; 
 
     private bool _isAlive;
@@ -33,6 +33,7 @@ public class Mouse : MonoBehaviour
     private float _lastDirectionChangeTime;
 
     private Cat _cat;
+    private RaycastHit[] _miceInTheWay = new RaycastHit[1];
 
     public float MoveSpeed
     {
@@ -125,10 +126,29 @@ public class Mouse : MonoBehaviour
                 _rb.velocity = Vector3.zero;
                 return;
             }
+
             var dirToCat = _cat.transform.position - transform.position;
-            // Hone in when closer
-            var speed = (dirToCat.sqrMagnitude < _fullChaseRange) ? _deadMoveSpeed : _deadMoveSpeed * 0.15f;
-            _rb.AddForce(dirToCat.normalized * speed);
+            
+
+            // Check collision with other mice
+            if (Physics.RaycastNonAlloc(new Ray(transform.position, dirToCat), _miceInTheWay, _rb.velocity.magnitude, _miceAvoidMask) > 0)
+            {
+                // Avoid
+                var dir = (_miceInTheWay[0].transform.position - transform.position).normalized;
+
+                var desiredVelocity = dir * _deadMoveSpeed;
+                var steering = desiredVelocity - _rb.velocity;
+
+                _rb.velocity = steering;
+            }
+            else
+            {
+                var dirToCatNormalized = dirToCat.normalized;
+
+                // Hone in when closer (should be a seek + arrival, but this works ok)
+                var speed = (dirToCat.sqrMagnitude < _fullChaseRange) ? _deadMoveSpeed : _deadMoveSpeed * 0.15f;
+                _rb.AddForce(dirToCatNormalized * speed);
+            }
         }
     }
 
