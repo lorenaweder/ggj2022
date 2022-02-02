@@ -168,6 +168,7 @@ MonoBehaviour:
   _minDeadUpMovement: 0.25
   _impulseDecay: 5
   _invincibleTime: 1
+  _invincibleTimeChange: 0.3
   _deadLayer: 7
   _aliveLayer: 6
   _insideShitLayer: 11

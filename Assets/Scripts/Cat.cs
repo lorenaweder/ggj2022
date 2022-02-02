@@ -107,7 +107,8 @@ public class Cat : MonoBehaviour
 
         if (!isAlive)
         {
-            _invincibleTimer = _invincibleTimeChange;
+            // Keep a longer timer if just hit
+            _invincibleTimer = Mathf.Max(_invincibleTimer, _invincibleTimeChange);
 
             SoundManager.Instance.PlayEffectMusic("MusicCatDeath", true);
             _isInsideShit = false;
@@ -119,9 +120,6 @@ public class Cat : MonoBehaviour
         {
             _rb.velocity = Vector3.zero;
             SoundManager.Instance.PlayEffectMusic("MusicCatAlive", true);
-            _hitByMice = false;
-            _invincibleTimer = 0f;
-            _renderer.enabled = true;
 
             var hits = Physics.OverlapSphereNonAlloc(transform.position + _collider.center, _collider.radius * 0.8f,
                 _stuffNear, _insideCheckLayerMask);
