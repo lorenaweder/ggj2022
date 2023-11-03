@@ -20,6 +20,8 @@ The project will run on Win 64bits, and as it's built in Unity it is important n
 
 ### Links
 
-Game page: https://globalgamejam.org/2022/games/bardo-decide-fate-schr%C3%B6dingers-cat-6
+Game page: https://globalgamejam.org/2022/games/bardo-decide-fate-schr%C3%B6dingers-cat-6 
+
 Play online: https://annadohy.itch.io/bardo
+
 Gameplay: https://www.youtube.com/watch?v=Z4PaERYOayE 
