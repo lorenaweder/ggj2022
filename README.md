@@ -26,7 +26,8 @@ The project will run on Win 64bits, and as it's built in Unity it is important n
 
 ### Screenshots
 
-![Live Cat](https://github.com/lorenaweder/ggj2022/assets/13229280/81abb0ad-7307-48a3-aff8-53d03c318b16)
+![Live Cat](https://github.com/lorenaweder/ggj2022/assets/13229280/31bb54e8-41e4-4e1d-87ed-6cacc8c521d1)
 
-![Ghost Cat](https://github.com/lorenaweder/ggj2022/assets/13229280/1a6cbffd-d647-4b8a-9960-599e2d46a3ff)
+![Ghost Cat](https://github.com/lorenaweder/ggj2022/assets/13229280/4064dbe3-0fb8-4818-8bab-0bf6621e508c)
+
 
